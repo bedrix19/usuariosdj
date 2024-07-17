@@ -6,11 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Registrar nuevo usuario</h1>
-
-    <form method="post"> {%csrf_token%}
-        {{ form.as_p }}
-        <button type="submit">Registrar</button>
-    </form>
+    <h1> Menú principal </h1>
+    <ul>
+        <li><a href="{% url 'users_app:user-login' %}">login</a></li>
+        <li><a href="{% url 'users_app:user-register' %}">registrarse</a></li>
+    </ul>
 </body>
 </html>
