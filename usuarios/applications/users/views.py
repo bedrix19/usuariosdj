@@ -46,7 +46,7 @@ class UserRegisterView(FormView):
         ## send_mail(
         ##     'Confirmación de email',
         ##     'Codigo de verificación:\t'+codigo,
-        ##     'renatosoxd@gmail.com',
+        ##     'Xemail-practicasD@gmail.com',
         ##     [form.cleaned_data['email']],
         ## )
         ## # redirigir a pantalla de validación
