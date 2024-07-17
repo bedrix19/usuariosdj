@@ -1,3 +1,8 @@
+git add .
+git commit -m "
+git push origin
+
+
 TUTORIAL: https://www.w3schools.com/django/index.php
 El tutorial es muy basico, mejor seguir un curso mas reciente para aprender el uso de clases y estructura 'optima' de un proyecto
 
