@@ -1,0 +1,111 @@
+TUTORIAL: https://www.w3schools.com/django/index.php
+El tutorial es muy basico, mejor seguir un curso mas reciente para aprender el uso de clases y estructura 'optima' de un proyecto
+
+Hay que crear un entorno y activarlo
+> python3 -m venv myworld
+> source myworld/bin/activate
+
+Instalar Django
+> python3 -m pip install Django
+
+Ver versiones
+> python3 --version
+> django-admin --version
+
+Crear el proyecto Django en la carpeta de myworld
+> django-admin startproject dj_project
+
+Navegar a dj_project e inciar el servidor
+> python3 manage.py runserver
+
+Entramos al navegador a http://127.0.0.1:8000/ para comprobar que se inicio
+
+Creamos la aplicacion members
+> python3 manage.py startapp members
+
+En members/views.py se resuelven las solicitudes http mediante 'views' (funciones en python). Mejor si se empieza usando clases y ListView
+
+Al mismo nivel de views creo urls.py que sera para enrutar las solicitudes, tambien hay que enrutar al fichero urls.py que esta
+en el diretorio dj_project
+
+La aplicacion members que creamos debe añadirse en el fichero dj_project/settings.py en INSTALLED_APPS, luego hay que ir a
+dj_project y ejecutar
+> py manage.py migrate
+
+Cuando creamos un modelo en members/models.py hay que ir a dj_project y ejecutar
+> python3 manage.py makemigrations members
+> python3 manage.py migrate
+Obtenemos members/migrations/0001_initial.py y Django crea la tabla en SQL, podemos ver el codigo usado con
+> python3 manage.py sqlmigrate members 0001
+
+La tabla creada está vacía, usaremos el interpretador de Django
+> python3 manage.py shell
+>>> from members.models import Member
+>>> Member.objects.all()
+<QuerySet []>
+>>> member = Member(firstname='Renato', lastname='Cardenas')
+>>> member.save() 
+>>> Member.objects.all().values()
+
+Es util usar el administrador para gestionar los datos que tenemos, la vista de los objetos se puede ver en:
+https://www.w3schools.com/django/django_admin_set_list_display.php
+
+
+Logica Django en documentos html ==> {% %}
+
+Para gestionar la pagina de 404 ERROR ponemos la propiedad DEBUG de dj_project/settings.py a False y admitimos todos los hosts
+que pueden ejecutar el proyecto. Creamos el fichero 404.html que se mostrará cuando no se encuentra el recurso. Debe ponerse en
+True si queremos que se muestren los *.css
+
+Instalamos WhiteNoise
+> pip install whitenoise
+Y luego hay que añadirlo en dj_project/settings.py en MIDDLEWARE
+https://www.w3schools.com/django/django_collect_static_files.php
+Django va ir primero a la ruta señalada en STATICFILES_DIRS y en caso de no encontrar el recurso va la carpeta estática de la app
+
+Cambie la url de main.html por como está en https://docs.djangoproject.com/en/5.0/intro/tutorial03/ , basicamente en vez de ponerse
+la URL entera en un href, lo que se hace es referenciar la url con el nombre con la que está definida en urls.py.
+Es posible definir un app_name="polls" en urls.py y hacer lo que se llama Namespacing URL names, yo no lo hago porque igual debería 
+cambiar todas las referencias que ya tengo en los HTMLs xd pero se ve que vale la pena para tener mas organizado las cosas. (pero lo
+de referenciar la URL por su nombre si que lo hice porque no requiere cambiarlo en todos)
+
+######################################## PostgreSQL ##################################
+> sudo apt install postgresql postgresql-contrib
+> psql --version
+> sudo systemctl start postgresql
+> sudo systemctl enable postgresql
+> sudo -i -u postgres
+> psql
+En la consola de PostgreSQL
+> CREATE DATABASE dbmember;
+> CREATE USER bedrix WITH PASSWORD 1234;
+> GRANT ALL PRIVILEGES ON DATABASE dbmember TO bedrix;
+Acceder a la base de datos creada
+> \c dbmember
+
+En el entorno virtual
+> pip install psycopg2-binary
+
+######################################## practicas ##################################
+Creamos un nuevo proyecto llamado practicas, creamos la carpeta settings y realizamos los cambios necesarios para preparar el area de trabajo, editamos
+manage.py cambiando la linea donde busca el fichero de settings, para que use la configuracion que gestionaremos en este proyecto
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'practicas.settings.local')
+
+######################################## practicas ##################################
+> sudo -i -u postgres
+> psql dbbiblioteca
+> CREATE EXTENSION pg_trgm;
+> CREATE INDEX libro_titulo_idx ON libro_libro USING GIN(titulo gin_trgm_ops);
+
+######################################## usuarios ##################################
+Creamos el entorno, entramos en él y empezamos el projecto en una carpeta diferente en donde debemos instalar las cosas
+> pip install django
+> django-admin startproject usuarios
+> pip install unipath
+> pip install pillow
+Para ver que tenemos instalado y copiarlo en local.txt:
+> pip freeze --local
+Podemos automatizar todo haciendo que se instalen las cosas del fichero local.txt con
+> pip install -r requirements/local.txt
+
+Ahora tenelos las cosas "privadas" en un archivo secret.json y se pasan mediante una funcion definida en settings/base.py Y la ocultamos de git con .gitignore
